@@ -1,18 +1,16 @@
-# Messenger Pro V45.3
+# Messenger Pro V45.7
 
-GitHub-ready Messenger project.
+Full duplicate-message/call-history stability pass based on the V45.6 source.
 
-## Important security note
-TURN credentials must NOT be committed to a public repository. Keep real ExpressTURN credentials in a private/server-side environment and use `turn-config.js` only with placeholders in public code.
+## Fixes
+- Prevents rapid double-send from creating duplicate text messages.
+- Prevents both call participants from creating duplicate call-history chat entries for one call.
+- Suppresses legacy duplicate call-history cards by `callId`.
+- Prevents duplicate incoming-call listeners after app reinitialization/reconnect.
+- Prevents duplicate message-notification listener setup.
+- TURN credentials are not committed to this public repository.
 
-## Main features
-- WebRTC audio/video calling
-- ExpressTURN ICE relay configuration
-- Firebase-based app structure
-- Right-click protection with `Hacker Not Allow`
-- Existing Messenger Pro UI and call features
+## Important
+The public frontend uses direct WebRTC/STUN only. TURN is disabled. Some restrictive networks may still require TURN for reliable calls.
 
-## Setup
-1. Configure Firebase using your own project credentials.
-2. Configure TURN credentials securely; do not publish secrets.
-3. Deploy the site using your preferred hosting provider.
+See `V45_7_ALL_FIXES.txt` for the audit notes.
