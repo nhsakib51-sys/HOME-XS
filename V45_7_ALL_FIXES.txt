@@ -1,0 +1,13 @@
+Messenger Pro V45.7 audit/fix notes
+
+Fixed in source:
+1. Call history is now written with a deterministic _call_<callId> key and Firebase transaction instead of push(), preventing both participants from creating duplicate call-history messages.
+2. Legacy duplicate call-history cards are suppressed in the chat UI by callId.
+3. sendMessage() now has an in-flight lock so rapid double-click/Enter events cannot create two identical text messages.
+4. Incoming-call listener keeps the exact Firebase Query instance and detaches the previous child_added listener before attaching a new one, preventing duplicate incoming-call popups after reconnect/re-init.
+5. Notification listener setup is guarded so it cannot be attached twice.
+6. TURN remains disabled in the public frontend; no ExpressTURN password is included.
+
+Local verification: script.js passes Node syntax check; release ZIP passes unzip integrity check.
+
+Important: real device/network WebRTC testing is still required for live call behavior. GitHub public repositories must not contain TURN/API secrets.
