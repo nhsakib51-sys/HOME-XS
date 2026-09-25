@@ -1,0 +1,11 @@
+Messenger Pro V10.2 - Photo + Message Delete Fix
+
+1. Photo uploads use Firebase Storage first.
+2. If Storage is unavailable, small compressed photos (<=3 MB) use a fallback data URL so a photo can still be sent.
+3. Videos do not use the fallback because base64 videos are too large for Realtime Database.
+4. Message delete now removes the message from the UI and local cache immediately, then deletes it from Realtime Database.
+5. If Firebase rejects the deletion, the app shows the exact Firebase error and resyncs the chat.
+6. For best media behavior, deploy Storage rules:
+   firebase deploy --only storage
+7. Deploy database rules too:
+   firebase deploy --only database

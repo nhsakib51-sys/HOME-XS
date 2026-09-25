@@ -1,0 +1,17 @@
+Messenger Pro V10.2 - Friend / Call / Voice Update
+
+Added:
+- Incoming call ringtone uses ringtone.wav and a browser audio-unlock fallback after first user interaction.
+- Friend profile popup from the chat header.
+- Block / Unblock friend.
+- Delete Friend (removes the mutual friend relationship; chat history is not automatically deleted).
+- Blocked users cannot send messages/media or start/receive calls through the app.
+- Friend list last-message lookup now uses lastMessages/<me>/<friend> instead of reading the whole chat room.
+- Old installations without lastMessages are backfilled once from the latest chat message.
+- Chat history is cached locally so reopening a recent chat can show the last page immediately while Firebase refreshes it.
+- Voice messages show animated bars while audio is playing.
+- Voice recording UI has a live pulsing animation while recording.
+- Initial chat page reduced to 20 messages for faster opening; older messages remain available.
+
+Important browser note:
+Browsers can block autoplay audio until the user has interacted with the site. The build primes the ringtone on the first click/touch/key interaction and then plays ringtone.wav for incoming calls. A browser cannot be forced to bypass its autoplay policy before any user gesture.

@@ -1,0 +1,8 @@
+X AI PREMIUM UPDATE
+- Removed Gemini API key entry/configuration from script.js.
+- API key is now entered from Settings > Privacy & Chat > X AI and stored in browser localStorage.
+- Added photo picker and image preview in X AI chat.
+- Added image understanding and image-edit request flow; image-capable Gemini models are attempted for edit requests.
+- Added per-code-block Copy button with styled code panels.
+- Added premium image/code animations and polished AI attachment UI.
+- Important: a client-side API key is still visible to the browser. For production, use a server-side proxy/Cloud Function.

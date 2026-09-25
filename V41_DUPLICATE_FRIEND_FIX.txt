@@ -1,0 +1,2 @@
+V41 FIX: Prevented initApp/loadConversations from being initialized more than once.
+This fixes duplicate friend rows caused by duplicate Firebase listeners when the manual Gmail login flow and auth state callback both initialize the app.

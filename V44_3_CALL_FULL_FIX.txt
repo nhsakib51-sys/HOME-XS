@@ -1,0 +1,18 @@
+Messenger Pro V44.3 — CALL SYSTEM FULL FIX
+
+Fixed in this build:
+1. Two-sided call history: caller and receiver each write their own call bubble using historyByUser/{username}; no single-user race lock.
+2. Outgoing no-answer timeout now writes the caller's history before ending the call.
+3. Incoming no-answer timeout now writes the receiver's missed/no-answer history before clearing the incoming UI.
+4. Correct ICE restart signaling: caller publishes restartOffer; callee answers with restartAnswer. The restart answer is no longer written into the normal answer field.
+5. ICE restart clears the old candidate branch before a new ICE generation to reduce stale-candidate conflicts.
+6. Camera flip now acquires the new camera BEFORE stopping the old track; if switching fails, the current camera remains active.
+7. Native Android FCM token is synced from AndroidApp.getFcmToken() to fcmTokens/{username}, enabling the included incoming-call Cloud Function to actually reach the Android device.
+8. Added a web incoming-call push Cloud Function for users who configure the Web Push VAPID key.
+9. Remote video uses contain so the caller's frame is not cropped by the call UI.
+10. Call UI gets safe-area/viewport overrides for modern phones.
+
+Important:
+- WebRTC cannot guarantee connectivity across every mobile/CGNAT network with STUN alone. A TURN provider is still required for the difficult networks. turn-config.js now supports a urls[] list with short-lived username/credential. Do not put a long-lived TURN secret in a public frontend repository.
+- Native Android background call delivery requires deploying the included Android patch/service and Firebase Functions, plus registering the Android FCM token (the web code now performs that sync automatically when the bridge exposes getFcmToken()).
+- Web background incoming-call push requires a real Firebase Web Push VAPID key in script.js and a deployed notifyWebIncomingCall function.

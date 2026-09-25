@@ -1,0 +1,7 @@
+V44.1 MEDIA EDITOR UPDATE
+- Added Messenger-style interactive photo crop box, matching the video crop UI.
+- Photo crop supports Free, 1:1, 4:5, 16:9 and 9:16 ratios.
+- Photo crop box can be dragged and resized from corners/sides with grid overlay.
+- Confirmed crop is applied to the exported image.
+- Added smooth text-size slider (16–120) with live size value for photo/video text.
+- Text size now updates immediately while dragging the slider.

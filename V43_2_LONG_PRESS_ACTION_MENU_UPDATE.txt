@@ -1,0 +1,1 @@
+Message action menu updated: normal tap/click no longer opens it. Hold/long-press for 550ms opens the menu. Menu uses fixed viewport positioning and is clamped inside the screen on desktop and mobile.

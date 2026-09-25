@@ -1,0 +1,19 @@
+Messenger Pro BD V10.9 — Android WebView Audio Route
+
+The website now starts calls in Earpiece mode and the speaker button switches to Loudspeaker.
+For a real Android earpiece/loudspeaker route, expose this Javascript bridge from MainActivity:
+
+webView.settings.javaScriptEnabled = true
+webView.addJavascriptInterface(object {
+    @android.webkit.JavascriptInterface
+    fun setSpeakerphone(on: Boolean) {
+        runOnUiThread {
+            val am = getSystemService(android.content.Context.AUDIO_SERVICE) as android.media.AudioManager
+            am.mode = android.media.AudioManager.MODE_IN_COMMUNICATION
+            am.isSpeakerphoneOn = on
+        }
+    }
+}, "AndroidAudio")
+
+The JS calls window.AndroidAudio.setSpeakerphone(true/false) automatically when available.
+If the bridge is not present (normal website), the UI still works, but browser audio routing is controlled by the browser/device and cannot be forced to the physical earpiece by standard web JavaScript.

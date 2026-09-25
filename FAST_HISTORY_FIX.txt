@@ -1,0 +1,11 @@
+Messenger Pro V10.2 - latest speed/media/presence update
+
+- Chat opens with the latest 30 messages instead of 12.
+- Local cache also stores the latest 30 messages.
+- Loading spinner is delayed to 10 seconds and is skipped entirely when cache exists.
+- Older messages remain available through Load older messages.
+- Photos are resized to max 1920px and JPEG-compressed before Firebase Storage upload for faster/reliable sending.
+- Media upload errors now show the Firebase error code to make Storage-rule problems visible.
+- Presence now uses both the existing boolean and a 10-second heartbeat under presenceMeta/{username}.
+- Friend/chat online status accepts a fresh heartbeat (<30 seconds) so users do not appear Offline during brief reconnects.
+- Deploy storage.rules and database rules with Firebase CLI if your console has not received the latest rules.

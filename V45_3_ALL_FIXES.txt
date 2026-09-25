@@ -1,0 +1,16 @@
+Messenger Pro V45.3 - ALL FIXES
+
+Included in this build:
+- Global right-click/context-menu block with "Hacker Not Allow" alert.
+- TURN credential readiness check so calls do not silently hang when ExpressTURN credentials are missing.
+- ExpressTURN UDP + TCP configuration remains in turn-config.js.
+- Outgoing call timeout now distinguishes no-answer from answered-but-not-connected.
+- Fixed an outgoing call listener bug where restart-answer handling could return early and skip connected/ended state processing.
+- Added a short ICE disconnected grace period before restart attempts.
+- ICE failed/disconnected recovery remains enabled.
+- Existing Firebase signaling, call history, audio/video controls, camera flip, mini call bar, and Android bridge code retained.
+
+Important:
+- Enter your own ExpressTURN username/password in turn-config.js.
+- Do not share those credentials in chat or publish them in a public repository.
+- Right-click blocking is only a UI restriction; it is not a security boundary.

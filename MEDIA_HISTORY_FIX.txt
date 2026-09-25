@@ -1,0 +1,23 @@
+Messenger Pro V10.2 - Fast History / Media / Search / Requests Update
+
+Performance:
+- Chat history now opens with the latest 25 messages.
+- Messages are rendered progressively through Firebase child_added instead of waiting for the entire page before showing anything.
+- Older messages remain available with the Load older messages button.
+- New messages continue to arrive live without re-rendering the whole history.
+- Conversation previews read only the latest chat record instead of downloading the full room.
+
+Media:
+- Images/videos use Firebase Storage for new uploads.
+- Upload progress shows percentage and transferred/total bytes.
+- Photo max: 15 MB. Video max: 100 MB.
+- Chat history media uses lazy loading and video metadata preload.
+
+Friend requests:
+- Friend requests now show Follow back and Reject side-by-side.
+
+Search:
+- Search has a dedicated X close button.
+- Press Escape while searching to close/clear the search results.
+
+Existing Firebase setup is preserved, including the ms-fix-4e05f Realtime Database URL.

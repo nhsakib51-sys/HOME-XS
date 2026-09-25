@@ -1,0 +1,6 @@
+V43 FRIEND NICKNAME UPDATE
+- Added Change Nickname button to Friend Profile.
+- Nicknames are stored per-user at friendNicknames/<myUsername>/<friendUsername>.
+- Nickname is shown in the chat header and friend list.
+- Leaving nickname empty removes it.
+- Original account name and username remain unchanged for the other user.

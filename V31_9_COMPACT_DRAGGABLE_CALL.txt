@@ -1,0 +1,8 @@
+MESSENGER PRO BD V31.9 - COMPACT DRAGGABLE CALL MINI PLAYER
+
+- Floating call bar is now compact like Messenger instead of full width.
+- Drag the mini call bar from its empty/main area and place it anywhere on screen.
+- Position is remembered in the browser/device local storage.
+- Buttons remain clickable and do not trigger dragging.
+- Position is clamped to the visible screen and adjusted on resize.
+- Existing call, restore, and end-call functions remain unchanged.

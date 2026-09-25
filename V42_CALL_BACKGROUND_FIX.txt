@@ -1,0 +1,17 @@
+Messenger Pro BD V42 — Android call background/screen-off fix
+
+Web layer:
+- Keeps the native Android call state active while an audio/video call or incoming-call UI exists.
+- Re-syncs the native call state after screen wake, WebView resume, focus, and visibility changes.
+- Existing WebRTC/Firebase call session is not ended when the screen turns off.
+- Existing manual End Call behavior remains unchanged.
+
+Android layer:
+- MainActivity patch now uses a PARTIAL_WAKE_LOCK during active calls.
+- Active calls are promoted to a foreground service so Android has an ongoing call process/notification.
+- Screen-off/backgrounding therefore no longer intentionally tears down the call.
+- Home/background/PiP is supported. Force-stopping the app from Android Settings is not supported.
+- With the current WebView/WebRTC architecture, swiping the app away from the recent-apps screen cannot be guaranteed to preserve a live WebRTC call on every Android vendor/version. A fully guaranteed killed-app call requires moving WebRTC signaling/media into a native foreground service.
+
+IMPORTANT:
+Merge the supplied Android files into the existing Android Studio project and keep your existing package declaration/application setup.

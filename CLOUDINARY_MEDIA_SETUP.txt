@@ -1,0 +1,8 @@
+Cloudinary media storage
+
+This build uses Cloudinary for chat photos/videos instead of Firebase Storage or browser localStorage.
+Cloud name: zmwewrbf
+Unsigned upload preset: massenger
+
+The browser sends media directly to Cloudinary using the unsigned preset. Firebase Realtime Database stores only the secure media URL and metadata.
+Do NOT add an API secret to the frontend.

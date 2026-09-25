@@ -1,0 +1,11 @@
+V45.1 CALL / ICE FIX
+
+Fixed the WebRTC signaling race where the caller created the Firebase call record only after setLocalDescription().
+Chrome can emit ICE candidates immediately after setLocalDescription(), so early candidate writes could be rejected because the parent call node did not exist yet.
+
+The call record is now created first (without status), then the local offer is created, and the record is updated to status=calling with the offer.
+This keeps Firebase Rules satisfied and makes early ICE candidate writes reliable.
+
+Also added ICE/connection state diagnostics and explicit Connected status handling.
+
+IMPORTANT: Cross-network calls still require a valid TURN service when direct STUN/host/reflexive ICE candidates cannot connect. Configure turn-config.js with your TURN provider credentials.

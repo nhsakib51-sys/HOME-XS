@@ -1,0 +1,21 @@
+MESSENGER PRO V45.2 - EXPRESS TURN SETUP
+
+1. Open turn-config.js in Notepad.
+2. Keep the two TURN URLs unless your ExpressTURN dashboard shows a different server hostname.
+3. Replace only:
+   PASTE_YOUR_EXPRESSTURN_USERNAME_HERE
+   PASTE_YOUR_EXPRESSTURN_PASSWORD_HERE
+   with the Username and Password shown in your ExpressTURN dashboard.
+4. Save the file.
+5. Open/reload Messenger Pro and test a call.
+
+IMPORTANT SECURITY:
+- Never post your TURN username/password publicly.
+- Do not put the TURN Secret Key in this file.
+- ExpressTURN documents free.expressturn.com:3478 and supports UDP/TCP TURN authentication.
+
+TESTING:
+- Test from two different networks, e.g. PC Wi-Fi + phone mobile data.
+- If the call still says Connecting..., open Chrome chrome://webrtc-internals
+  during the call. A successful TURN-relayed connection should show a selected
+  candidate pair using relay.

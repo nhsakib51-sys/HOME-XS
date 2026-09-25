@@ -1,0 +1,13 @@
+MESSENGER PRO BD - WEB PUSH SETUP
+
+The project now includes Firebase Web Push support, a service worker, client token registration, and a Cloud Function that sends a push for new chat messages.
+
+One Firebase value is required because VAPID public keys are project-specific:
+1. Open Firebase Console for project ms-fix-4e05f.
+2. Project settings -> Cloud Messaging.
+3. Under Web configuration / Web Push certificates, create or copy the public VAPID key.
+4. Open script.js and replace YOUR_FIREBASE_WEB_PUSH_VAPID_KEY with that public key.
+5. Deploy Hosting/your web files and deploy the Functions plus database rules.
+6. Open the site on HTTPS, allow notifications, then use Settings -> Enable Push Notifications.
+
+Browser notifications continue to work even before the VAPID key is added. True background push (when the browser tab is closed) requires the VAPID key and deployed Cloud Function.

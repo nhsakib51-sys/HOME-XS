@@ -1,0 +1,19 @@
+Messenger Pro V45 — Call System Stability / Security Fix
+
+Updated from V44.3.
+
+Fixed:
+1. Incoming-call listener now watches only status=calling records, validates the callee, ignores stale calls, and prevents two simultaneous incoming-call UI races.
+2. Incoming-call state is cleared correctly when the caller cancels, rejects, times out, or is blocked.
+3. ICE restart candidate cleanup now removes the correct candidate branch for caller/callee instead of the opposite branch.
+4. Remote ICE candidates are de-duplicated and retried after signaling settles, reducing intermittent connection failures caused by candidates arriving before the remote description.
+5. Optional TURN config now accepts urls[], a single url, or server with username/credential.
+6. Browser audio volume is no longer incorrectly used as a fake earpiece/speaker route. Native AndroidAudio.setSpeakerphone remains the real route switch when the APK bridge is available.
+7. Call cleanup resets the incoming-call processing lock so a later call can start normally.
+8. Realtime Database call records now have validation for required caller/callee/type/createdAt fields and supported call statuses.
+9. Existing mute, camera, camera flip, minimize/restore, ringtone, call timer, history, FCM, and native call-service integration are preserved.
+
+Important:
+- TURN credentials cannot be safely invented in a public frontend. For reliable calls on restrictive mobile/CGNAT networks, put short-lived TURN credentials into turn-config.js or inject them at deploy time.
+- After changing database.rules.json, publish the rules in Firebase Console/CLI.
+- Native Android speaker routing still requires the included AndroidAudio bridge.

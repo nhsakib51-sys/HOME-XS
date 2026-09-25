@@ -1,0 +1,8 @@
+Messenger Pro BD V31.8 — Premium Call UI Update
+
+- Moved the call minimize/down control to the top-right corner.
+- Removed the minimize control from the bottom control bar.
+- Added lightweight glass/premium call controls with smooth hover/tap feedback.
+- Improved audio/video call screen contrast and spacing.
+- Kept existing call logic, WebRTC, mute, speaker, camera, flip, minimize and restore functions unchanged.
+- No heavy external assets added; the UI remains fast.

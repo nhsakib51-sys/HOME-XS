@@ -1,0 +1,14 @@
+Messenger Pro BD V10.10
+
+- Animated three-dot typing indicator.
+- Floating mini call player: minimize call, keep chatting, restore call, or end call.
+- Call timer/status appears in the mini player.
+- Android bridge for Picture-in-Picture during calls.
+- Native FCM files for incoming-call notification when the APK is backgrounded/killed.
+- Forgot Password now falls back to Firebase's built-in reset email if the custom OTP/SMTP Cloud Function is unavailable.
+
+Firebase billing:
+- Realtime Database has a no-cost Spark quota.
+- Current default Cloud Storage buckets require Blaze; Blaze keeps no-cost usage quotas and bills only usage beyond them.
+- FCM is a no-cost Firebase product.
+- The custom numeric OTP Cloud Function requires Blaze; the reset-email fallback can avoid that dependency.

@@ -1,0 +1,13 @@
+Messenger Pro BD V44.2 — Call System Stability Fix
+
+Fixed/strengthened the call system without changing the Cloudinary/media editor work:
+- Prevented duplicate/double call starts and double accept actions while a call is being created.
+- Added a 45-second unanswered-call timeout for outgoing calls.
+- Added a 45-second expiry for incoming ringing calls when nobody answers.
+- Cleared call timers during every call cleanup path.
+- Reset microphone/camera/speaker UI state after a call ends.
+- Reset call busy/locking state so the next call can start normally.
+- Kept WebRTC ICE restart/reconnect behavior intact.
+- Kept incoming ringtone, minimize/restore, speaker, mute, camera toggle and camera flip behavior intact.
+- Kept call history callback behavior intact.
+- Verified script.js with node --check.

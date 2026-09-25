@@ -1,0 +1,5 @@
+Messenger Pro V24
+- Base: V19 Online Status Fixed
+- Replaced the old message notification sound with the user-provided 7585 Dilin notification ringtone.
+- Incoming message sound now loads ./notification.mp3.
+- Call ringtone.wav was not changed by this update.

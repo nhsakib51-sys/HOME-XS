@@ -1,0 +1,6 @@
+V45.2 - EXPRESS TURN INTEGRATION
+
+- Added ExpressTURN UDP and TCP TURN entries.
+- Kept Google STUN fallback.
+- Added a beginner-friendly setup file.
+- Real credentials are intentionally NOT embedded in the ZIP.

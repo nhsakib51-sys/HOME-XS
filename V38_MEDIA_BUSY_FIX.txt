@@ -1,0 +1,7 @@
+V38 MEDIA BUSY FIX
+
+- Fully detaches the local video element before a new call.
+- Stops all app-owned recorder/call tracks before getUserMedia.
+- Adds multiple Android/Chrome NotReadableError retries with increasing delay.
+- Clears the video element on call end so an old MediaStream reference cannot linger.
+- Keeps a clear message when the hardware is genuinely occupied by another app/tab.

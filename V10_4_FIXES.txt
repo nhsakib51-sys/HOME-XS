@@ -1,0 +1,11 @@
+Messenger Pro Lite V10.4
+
+FIXES:
+- Live child_changed listener: reactions/read status now appear immediately without leaving/reopening chat.
+- Sent messages show a check status; read messages show double check when readBy is set.
+- Incoming messages are marked read while the chat is open.
+- Media upload errors are now explicit. Photos/videos use Firebase Storage.
+- Premium dark UI polish: gradients, focus states, shadows and cleaner message/media cards.
+
+IMPORTANT MEDIA SETUP:
+If both photo and video uploads fail, Firebase Storage must be enabled for project ms-fix-4e05f and storage.rules must be deployed. The included storage.rules allows authenticated users to read/write chat-media.

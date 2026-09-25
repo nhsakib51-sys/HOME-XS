@@ -1,0 +1,6 @@
+Messenger Pro V27
+- Added premium Text tool inside Photo Editor and Video Editor.
+- Text supports color, size, and top/center/bottom placement.
+- Photo text is burned into the exported JPG.
+- Video text is rendered into the exported WebM when MediaRecorder/canvas capture is supported; audio tracks are preserved when available.
+- Existing V26 features retained.

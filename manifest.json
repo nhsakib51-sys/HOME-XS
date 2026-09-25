@@ -1,0 +1,48 @@
+{
+  "id": "/massenger-pro-bd/",
+  "name": "Messenger Pro BD",
+  "short_name": "Messenger Pro",
+  "description": "Messenger Pro BD web messaging app",
+  "start_url": "/massenger-pro-bd/",
+  "scope": "/massenger-pro-bd/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "orientation": "portrait",
+  "background_color": "#050814",
+  "theme_color": "#0084ff",
+  "lang": "en-US",
+  "categories": [
+    "social",
+    "communication"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/massenger-pro-bd/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/massenger-pro-bd/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/massenger-pro-bd/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/massenger-pro-bd/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

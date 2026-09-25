@@ -1,0 +1,12 @@
+V37 MEDIA BUSY FIX
+
+Fixed:
+- Releases this app's voice-recording microphone stream before starting a call.
+- Releases stale local call media before requesting a new microphone/camera stream.
+- Adds a short release delay and one controlled retry for Android/Chrome NotReadableError.
+- Prevents voice recording from starting while a call/local media stream is active.
+- Improves the busy-device error message.
+- Camera flip now stops the old camera track before requesting the other lens, improving Android/WebView compatibility.
+
+Note:
+A browser cannot forcibly release a microphone/camera owned by a completely different app or browser tab. If another app/tab is using it, close that app/tab and try again.

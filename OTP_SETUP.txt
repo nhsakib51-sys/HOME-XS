@@ -1,0 +1,45 @@
+MESSENGER PRO - NUMERIC EMAIL OTP SETUP
+
+The website UI is ready, but numeric OTP email delivery requires the included Cloud Functions backend.
+
+A) Install Firebase CLI (once)
+   npm install -g firebase-tools
+   firebase login
+
+B) Install backend dependencies
+   Open a terminal in this project folder:
+   cd functions
+   npm install
+
+C) Configure Gmail SMTP
+   Copy:
+      functions/.env.example -> functions/.env
+   Then set:
+      SMTP_HOST=smtp.gmail.com
+      SMTP_PORT=465
+      SMTP_SECURE=true
+      SMTP_USER=YOUR_GMAIL
+      SMTP_PASS=YOUR_GMAIL_APP_PASSWORD
+      SMTP_FROM=YOUR_GMAIL
+
+   Do NOT put your normal Gmail password here. Create/use a Google App Password on the Gmail account used to send the OTP emails. Keep functions/.env private.
+
+D) Deploy
+   From the project root:
+      firebase deploy --only functions
+
+E) Frontend endpoint
+   script.js contains:
+      const PASSWORD_OTP_API_BASE = 'https://us-central1-ms-fix-4e05f.cloudfunctions.net';
+   If Firebase shows a different region/URL after deployment, replace that value.
+
+F) Test
+   Start the website with start.bat.
+   Login screen -> Forgot password? -> Gmail -> Next -> check Gmail -> enter 6-digit code -> Next -> new password + confirm -> Next -> login.
+
+Settings added in this build:
+- Change profile picture (round preview)
+- Change display name
+- Change username with uniqueness check and migration of the user's friend/request/chat references where supported by the app data model
+- Change password for Email/Password accounts (requires current password/re-authentication)
+- Social-login accounts show a note that password changes are managed by Google/Facebook/Apple.

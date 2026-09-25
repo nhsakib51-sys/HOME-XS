@@ -1,0 +1,11 @@
+Messenger Pro V31 — Premium Motion + Navigation
+
+- Added responsive premium micro-animations for screens, messages, action menus, emojis, buttons and modals.
+- Added browser/Android-style Back handling using history state.
+- Added Escape key to close the current layer on PC.
+- Added Alt+Left navigation on PC.
+- Added edge-swipe-from-left back gesture on touch screens.
+- Phone back arrow now uses the same universal navigation system.
+- Settings, AI, chat and friend profile views participate in navigation history.
+- Added reduced-motion accessibility support.
+- Preserved the existing V30.2 responsive phone/PC layout and features.

@@ -1,0 +1,10 @@
+PRESENCE FIX
+
+Active Now is now tied to the actual Messenger tab state:
+- Visible + focused + internet connected = Active Now
+- Tab hidden, window blurred, offline, or disconnected = Offline
+- Heartbeat refreshes every 5 seconds while active
+- No 30-second stale-heartbeat grace period is used
+- Firebase onDisconnect also marks the user offline
+
+This makes the friend list and chat header show Active Now only while the friend is actually active in the Messenger tab.

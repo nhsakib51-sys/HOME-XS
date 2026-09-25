@@ -1,0 +1,17 @@
+V43.2 UPDATE — X AI + PREMIUM DIALOGS
+
+Fixed:
+- Replaced remaining browser prompt()/confirm() flows with a custom premium animated dialog system.
+- Nickname change now uses the same custom dialog with character counter and keyboard support.
+- Edit Message now uses a premium multiline editor dialog.
+- Forward Message now uses a premium username dialog.
+- Delete Friend now uses a premium danger confirmation dialog.
+- Clear X AI History now uses a premium danger confirmation dialog.
+- Esc closes dialogs; Enter submits single-line input dialogs.
+- Added responsive and reduced-motion dialog styling.
+- Renamed visible SKM AI branding to X AI across the app UI and AI assistant responses.
+- Updated X AI system identity and connection-test text.
+
+Validation:
+- script.js passes Node syntax check.
+- No prompt()/confirm() calls remain in JS/HTML application code.

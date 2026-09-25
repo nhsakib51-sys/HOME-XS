@@ -1,0 +1,3 @@
+V36 TTS female voice update
+
+The app no longer depends on the previously configured restricted voice. It now queries ElevenLabs /v2/voices for an accessible female premade/default voice and retries with a refreshed voice list if the cached voice becomes unavailable. Rachel is retained only as a fallback.

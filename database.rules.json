@@ -1,0 +1,130 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "uid"
+      ],
+      "$username": {
+        ".read": "auth != null",
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (data.exists() && data.child('uid').val() == auth.uid && newData.child('uid').val() == auth.uid))"
+      }
+    },
+    "friends": {
+      "$owner": {
+        ".read": "auth != null && root.child('users').child($owner).child('uid').val() == auth.uid",
+        "$friend": {
+          ".read": "auth != null && (root.child('users').child($owner).child('uid').val() == auth.uid || root.child('users').child($friend).child('uid').val() == auth.uid)",
+          ".write": "auth != null && ((root.child('users').child($owner).child('uid').val() == auth.uid) || ((newData.val() == true || !newData.exists()) && root.child('users').child($friend).child('uid').val() == auth.uid && root.child('friendRequests').child($friend).child($owner).exists()))"
+        }
+      }
+    },
+    "friendRequests": {
+      "$recipient": {
+        ".read": "auth != null && root.child('users').child($recipient).child('uid').val() == auth.uid",
+        "$requester": {
+          ".read": "auth != null && (root.child('users').child($recipient).child('uid').val() == auth.uid || root.child('users').child($requester).child('uid').val() == auth.uid)",
+          ".write": "auth != null && (root.child('users').child($recipient).child('uid').val() == auth.uid || root.child('users').child($requester).child('uid').val() == auth.uid)"
+        }
+      }
+    },
+    "blocked": {
+      "$owner": {
+        ".read": "auth != null && root.child('users').child($owner).child('uid').val() == auth.uid",
+        "$friend": {
+          ".read": "auth != null && (root.child('users').child($owner).child('uid').val() == auth.uid || root.child('users').child($friend).child('uid').val() == auth.uid)",
+          ".write": "auth != null && root.child('users').child($owner).child('uid').val() == auth.uid && newData.isBoolean()"
+        }
+      }
+    },
+    "presence": {
+      "$username": {
+        ".read": "auth != null",
+        ".write": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid"
+      }
+    },
+    "presenceMeta": {
+      "$username": {
+        ".read": "auth != null",
+        ".write": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid"
+      }
+    },
+    "typing": {
+      "$roomId": {
+        "$username": {
+          ".read": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true",
+          ".write": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true && root.child('users').child($username).child('uid').val() == auth.uid"
+        },
+        ".read": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true"
+      }
+    },
+    "chatMembersByUid": {
+      "$roomId": {
+        ".read": "auth != null && data.child(auth.uid).val() == true",
+        "$uid": {
+          ".write": "auth != null && $uid == auth.uid && newData.val() == true"
+        }
+      }
+    },
+    "chats": {
+      "$roomId": {
+        ".read": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true",
+        "$messageId": {
+          ".write": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true && ((!data.exists() && root.child('users').child(newData.child('sender').val()).child('uid').val() == auth.uid) || (data.exists() && root.child('users').child(data.child('sender').val()).child('uid').val() == auth.uid && newData.child('sender').val() == data.child('sender').val()))",
+          "readBy": {
+            "$username": {
+              ".write": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true && root.child('users').child($username).child('uid').val() == auth.uid && newData.val() == true"
+            }
+          },
+          "reaction": {
+            ".write": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true"
+          },
+          "deletedFor": {
+            "$username": {
+              ".write": "auth != null && root.child('chatMembersByUid').child($roomId).child(auth.uid).val() == true && root.child('users').child($username).child('uid').val() == auth.uid && newData.val() == true"
+            }
+          }
+        }
+      }
+    },
+    "calls": {
+      "$calleeUsername": {
+        "$callId": {
+          ".read": "auth != null && (root.child('users').child($calleeUsername).child('uid').val() == auth.uid || root.child('users').child(data.child('callerUsername').val()).child('uid').val() == auth.uid)",
+          ".write": "auth != null && (( !data.exists() && root.child('users').child(newData.child('callerUsername').val()).child('uid').val() == auth.uid && newData.child('calleeUsername').val() == $calleeUsername) || (data.exists() && (root.child('users').child($calleeUsername).child('uid').val() == auth.uid || root.child('users').child(data.child('callerUsername').val()).child('uid').val() == auth.uid)))",
+          ".validate": "newData.hasChildren(['callerUsername','calleeUsername','type','createdAt']) && newData.child('calleeUsername').val() == $calleeUsername && newData.child('callerUsername').isString() && (newData.child('type').val() == 'audio' || newData.child('type').val() == 'video') && newData.child('createdAt').isNumber() && (!newData.child('status').exists() || newData.child('status').val() == 'calling' || newData.child('status').val() == 'answered' || newData.child('status').val() == 'connected' || newData.child('status').val() == 'ended')"
+        },
+        ".read": "auth != null && root.child('users').child($calleeUsername).child('uid').val() == auth.uid"
+      }
+    },
+    "fcmTokens": {
+      "$username": {
+        ".read": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid",
+        ".write": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid"
+      }
+    },
+    "webFcmTokens": {
+      "$username": {
+        ".read": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid",
+        "$tokenKey": {
+          ".write": "auth != null && root.child('users').child($username).child('uid').val() == auth.uid && newData.child('token').isString()"
+        }
+      }
+    },
+    "passwordOtps": {
+      ".read": false,
+      ".write": false
+    },
+    "lastMessages": {
+      "$owner": {
+        ".read": "auth != null && root.child('users').child($owner).child('uid').val() == auth.uid",
+        "$friend": {
+          ".read": "auth != null && (root.child('users').child($owner).child('uid').val() == auth.uid || root.child('users').child($friend).child('uid').val() == auth.uid)",
+          ".write": "auth != null && (root.child('users').child($owner).child('uid').val() == auth.uid || root.child('users').child($friend).child('uid').val() == auth.uid) && root.child('users').child(newData.child('sender').val()).child('uid').val() == auth.uid"
+        }
+      }
+    }
+  }
+}

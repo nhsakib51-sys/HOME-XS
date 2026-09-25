@@ -1,0 +1,8 @@
+V28 UPDATE
+- Fixed message persistence: sendMessage now awaits Firebase write and updates local chat cache immediately.
+- Increased chat history page/cache from 30 to 100 messages to reduce apparent disappearing history when reopening chats.
+- Merged Firebase latest page with local cached rows instead of overwriting the cache.
+- Media editor is now true fullscreen/viewport locked like a modern Messenger-style composer.
+- Video editor stage uses minmax/flex sizing and overflow hidden so video/content cannot escape outside the editor screen.
+- Photo/video text overlay tools remain available.
+- Added Crop tool toggle for photo editor (zoomed crop-style framing).

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger Pro Ultimate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#0084ff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Messenger Pro">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="./favicon-64.png">
+</head>
+<body class="auth-booting">
+<div id="auth-boot-screen" class="auth-boot-screen"><div class="auth-boot-logo"><i class="fa-solid fa-comments"></i></div><div class="auth-boot-title">Messenger Pro BD</div><div class="auth-boot-spinner"></div><small>Restoring your session…</small></div>
+
+<div class="messenger-container">
+
+    <!-- Offline Notification Banner -->
+    <div id="offline-banner">No internet connection. Waiting for network...</div>
+
+    <!-- SIGNUP SCREEN -->
+    <div id="signup-screen" class="full-screen hidden">
+        <h2 style="color:#0084ff; margin-bottom:20px;">Create Account</h2>
+        <input type="text" id="su-name" class="auth-input" placeholder="Full Name">
+        <input type="text" id="su-username" class="auth-input" placeholder="Username">
+        
+        <div class="upload-box" onclick="document.getElementById('su-file').click()">
+            <div id="su-preview-container" style="display:flex; flex-direction:column; align-items:center;">
+                <i class="fa-solid fa-camera"></i>
+                <span>Upload Profile Picture</span>
+            </div>
+        </div>
+        <input type="file" id="su-file" style="display:none;" accept="image/*" onchange="handleSignupImage(event)">
+
+        <input type="email" id="su-email" class="auth-input" placeholder="Email Address">
+        <div class="password-wrap">
+            <input type="password" id="su-pass" class="auth-input password-input" placeholder="Password" minlength="8" autocomplete="new-password">
+            <button type="button" class="password-toggle" onclick="togglePassword('su-pass', this)" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <button class="auth-btn" onclick="registerUser()">Sign Up</button>
+        <div class="switch-text" onclick="showLogin()">Already have an account? <span>Login</span></div>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="full-screen">
+        <h2 style="color:#0084ff; margin-bottom:20px;">Messenger Login</h2>
+        <input type="email" id="li-email" class="auth-input" placeholder="Email Address">
+        <div class="password-wrap">
+            <input type="password" id="li-pass" class="auth-input password-input" placeholder="Password" minlength="8" autocomplete="current-password">
+            <button type="button" class="password-toggle" onclick="togglePassword('li-pass', this)" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <button class="auth-btn" onclick="loginUser()">Login</button>
+        <div class="switch-text forgot-password-link" onclick="openForgotPasswordFlow()">Forgot password?</div>
+        <div class="social-divider"><span>or continue with</span></div>
+        <div class="social-login-row">
+            <button type="button" class="social-btn google" onclick="socialLogin('google')" title="Continue with Google" aria-label="Continue with Google"><i class="fa-brands fa-google"></i><span>Google</span></button>
+            <button type="button" class="social-btn facebook" onclick="socialLogin('facebook')" title="Continue with Facebook" aria-label="Continue with Facebook"><i class="fa-brands fa-facebook-f"></i><span>Facebook</span></button>
+            <button type="button" class="social-btn apple" onclick="socialLogin('apple')" title="Continue with Apple" aria-label="Continue with Apple"><i class="fa-brands fa-apple"></i><span>Apple</span></button>
+        </div>
+        <div class="switch-text" onclick="resendVerificationEmail()" style="margin-top:8px;">Resend verification email</div>
+        <div class="switch-text" onclick="showSignup()">Don't have an account? <span>Sign Up</span></div>
+    </div>
+
+    <!-- FORGOT PASSWORD OTP FLOW -->
+    <div id="forgot-password-screen" class="full-screen hidden auth-flow-screen">
+        <button class="back-btn auth-flow-back" onclick="cancelForgotPasswordFlow()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <h2 style="color:#0084ff; margin-bottom:10px;">Forgot Password</h2>
+        <p id="forgot-step-text" class="auth-flow-help">Enter your Gmail address and we will send a verification code.</p>
+
+        <div id="forgot-step-email" class="forgot-step">
+            <input type="email" id="fp-email" class="auth-input" placeholder="Gmail Address" autocomplete="email">
+            <button class="auth-btn" onclick="requestPasswordOtp()">Next</button>
+        </div>
+
+        <div id="forgot-step-otp" class="forgot-step hidden">
+            <input type="text" id="fp-otp" class="auth-input otp-input" placeholder="6-digit code" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+            <button class="auth-btn" onclick="verifyPasswordOtp()">Next</button>
+            <div class="switch-text" onclick="requestPasswordOtp(true)">Resend code</div>
+        </div>
+
+        <div id="forgot-step-newpass" class="forgot-step hidden">
+            <div class="password-wrap">
+                <input type="password" id="fp-new-pass" class="auth-input password-input" placeholder="New Password (8+ characters)" minlength="8" autocomplete="new-password">
+                <button type="button" class="password-toggle" onclick="togglePassword('fp-new-pass', this)" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <div class="password-wrap">
+                <input type="password" id="fp-confirm-pass" class="auth-input password-input" placeholder="Confirm New Password" minlength="8" autocomplete="new-password">
+                <button type="button" class="password-toggle" onclick="togglePassword('fp-confirm-pass', this)" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <button class="auth-btn" onclick="completePasswordReset()">Next</button>
+        </div>
+    </div>
+
+    <!-- MAIN CHAT LIST -->
+    <div class="lite-header">
+        <div class="lite-header-left">
+            <div id="my-top-avatar" class="my-profile-icon">U</div>
+            <div class="brand-title-wrap"><h2 id="top-username-title">Messenger Pro BD</h2><span class="brand-badge">PREMIUM</span></div>
+        </div>
+        <i class="fa-solid fa-gear" onclick="animateSettings(this); openSettings()" class="settings-top-btn" style="cursor:pointer; color:#b0b3b8; font-size:20px;" title="Settings"></i>
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" id="friend-input" placeholder="Search user by username...">
+        <button class="search-action-btn" onclick="searchUser()" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="search-close-btn" onclick="clearSearch()" title="Close search" aria-label="Close search"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="chat-list" id="chat-list">
+        <!-- Search Results Container -->
+        <div id="search-results-section" style="display:none;">
+            <div class="section-title" style="color: #0084ff;"><i class="fa-solid fa-user"></i> Search Results</div>
+            <div id="search-results-container"></div>
+        </div>
+
+        <div id="requests-section" style="display:none;">
+            <div class="section-title" style="color: #fe2c55;"><i class="fa-solid fa-bell"></i> Friend Requests</div>
+            <div id="requests-container"></div>
+        </div>
+        <div class="section-title">Conversations</div>
+        <div class="friends-list-header"><span>Friends</span><span id="friends-count" class="friends-count">0 friends</span></div>
+        <div id="conversations-container"></div>
+    </div>
+
+    <!-- CHAT ROOM SCREEN -->
+    <div id="chat-room" class="sub-screen hidden">
+        <div class="room-header">
+            <div class="room-header-left" onclick="openFriendProfile()" style="cursor:pointer">
+                <button class="back-btn" onclick="event.stopPropagation(); mpBack()"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="avatar-container" style="width:36px; height:36px;">
+                    <div id="room-user-avatar" class="avatar" style="font-size:14px;">U</div>
+                    <div id="room-online-dot" class="online-dot"></div>
+                </div>
+                <div>
+                    <h3 id="room-user-name" style="font-size:15px; line-height:1.2;">User</h3>
+                    <p id="room-user-id" style="font-size:10px;color:#8a8d91;line-height:1;margin-top:1px;">@user</p><p id="room-status-text" style="font-size:11px; color:#b0b3b8; line-height:1; margin-top:2px;">Offline</p>
+                </div>
+            </div>
+            <div class="room-header-right">
+                <i class="fa-solid fa-magnifying-glass" onclick="toggleChatSearch()" title="Search in chat"></i>
+                <i class="fa-solid fa-phone" onclick="startAudioCall()" title="Audio Call"></i>
+                <i class="fa-solid fa-video" onclick="startVideoCall()" title="Video Call"></i>
+            </div>
+        </div>
+        
+        <div id="chat-search-bar" class="chat-search-bar hidden"><input id="chat-search-input" type="text" placeholder="Search messages…" oninput="searchInChat()"><button onclick="toggleChatSearch()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="room-messages" id="room-messages" onclick="hideActionMenu()">
+            <button id="load-older-messages" class="load-older-btn hidden" onclick="event.stopPropagation(); loadOlderMessages()"><i class="fa-solid fa-chevron-up"></i> Load older messages</button>
+            <div id="chat-loading" style="text-align:center; padding:30px; color:#b0b3b8; display:none;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:26px;"></i><br><span style="font-size:13px; margin-top:5px; display:inline-block;">Loading messages...</span>
+            </div>
+        </div>
+
+        <div id="typing-indicator" class="typing-indicator"><span id="typing-who">typing</span><span class="typing-dots" aria-label="typing"><i></i><i></i><i></i></span></div>
+        
+        <!-- Reply Preview Bar -->
+        <div id="reply-preview-bar" class="reply-preview-container">
+            <div class="reply-box-inner">
+                <div style="font-weight:bold; font-size:11px; color:#0084ff;" id="replying-to-name">Replying</div>
+                <div id="replying-to-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:300px;"></div>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="cancelReply()" style="cursor:pointer; color:#b0b3b8; font-size:16px;"></i>
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div id="pending-media-composer" class="pending-media-composer hidden" aria-live="polite">
+            <div class="pending-media-preview" id="pending-media-preview"></div>
+            <div class="pending-media-meta">
+                <div class="pending-media-name" id="pending-media-name">Selected media</div>
+                <div class="pending-media-size" id="pending-media-size"></div>
+                <input id="pending-media-caption" class="pending-media-caption" maxlength="500" placeholder="Add a caption…">
+                <div class="pending-media-actions">
+                    <button type="button" id="pending-media-edit" title="Edit media"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button type="button" id="pending-media-remove" title="Remove"><i class="fa-solid fa-xmark"></i> Remove</button>
+                    <button type="button" id="pending-media-send" class="pending-media-send" title="Send"><i class="fa-solid fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="media-upload-progress" class="media-upload-progress hidden">
+            <div class="media-upload-progress-top"><span id="media-upload-progress-text">Uploading media… 0%</span></div>
+            <div class="media-upload-progress-track"><div id="media-upload-progress-bar" class="media-upload-progress-bar"></div></div>
+        </div>
+
+        <div class="room-input">
+            <div id="normal-input-group" class="normal-input-group">
+                <label title="Send Image/Video"><i class="fa-solid fa-image"></i><input type="file" id="media-file-input" style="display:none;" accept="image/*,video/*" multiple onchange="sendMediaMessage(event)"></label>
+                <label title="Send File"><i class="fa-solid fa-paperclip"></i><input type="file" id="file-message-input" style="display:none;" onchange="sendFileMessage(event)"></label>
+                <button type="button" onclick="sendLocationMessage()" title="Send Location"><i class="fa-solid fa-location-dot"></i></button>
+                <button type="button" onclick="startLiveLocation()" title="Share Live Location"><i class="fa-solid fa-location-crosshairs"></i></button>
+                <button id="sticker-btn" onclick="toggleStickerTray()" title="Stickers"><i class="fa-regular fa-face-smile"></i></button>
+                <button id="mic-btn" onclick="startRecording()" title="Record Voice"><i class="fa-solid fa-microphone"></i></button>
+                <input type="text" id="message-input" placeholder="Aa" onfocus="setComposerFocus(true)" onblur="setComposerFocus(false)" oninput="handleTyping()">
+                <button onclick="sendComposerContent()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+
+            <div id="recording-input-group" class="recording-input-group">
+                <div class="rec-left-part">
+                    <button class="stop-record-btn" onclick="stopAndSendRecording()" title="Stop & Send"><i class="fa-solid fa-square"></i></button>
+                    <div id="rec-timer" class="rec-timer-badge">0:00</div>
+                </div>
+                <div class="rec-right-part">
+                    <button class="send-audio-btn" onclick="stopAndSendRecording()" title="Send Voice"><i class="fa-solid fa-paper-plane"></i></button>
+                    <button class="cancel-audio-btn" onclick="cancelRecording()" title="Cancel Voice"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div id="sticker-tray" class="sticker-tray" aria-hidden="true">
+                <div class="sticker-tray-title"><span>Stickers</span><button type="button" class="sticker-close-btn" onclick="closeStickerTray(event)" aria-label="Close stickers" title="Close">✕</button></div>
+                <div class="sticker-grid">
+                  <button type="button" onclick="sendSticker('😂')">😂</button><button type="button" onclick="sendSticker('❤️')">❤️</button><button type="button" onclick="sendSticker('😍')">😍</button><button type="button" onclick="sendSticker('🥰')">🥰</button><button type="button" onclick="sendSticker('😎')">😎</button><button type="button" onclick="sendSticker('🔥')">🔥</button><button type="button" onclick="sendSticker('👍')">👍</button><button type="button" onclick="sendSticker('🎉')">🎉</button><button type="button" onclick="sendSticker('😭')">😭</button><button type="button" onclick="sendSticker('😡')">😡</button><button type="button" onclick="sendSticker('🤗')">🤗</button><button type="button" onclick="sendSticker('💯')">💯</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="chat-tools-panel" class="chat-tools-panel hidden">
+      <div class="chat-tools-head"><strong>Chat controls</strong><button onclick="toggleChatTools()">✕</button></div>
+      <label>Wallpaper <input id="chat-wallpaper-input" type="text" placeholder="color or image URL"></label>
+      <label>Disappearing messages <select id="disappearing-select" onchange="saveChatPreference('disappearing',this.value)"><option value="off">Off</option><option value="1d">24 hours</option><option value="7d">7 days</option></select></label>
+      <label class="switch-row">Compact messages <input id="compact-chat-toggle" type="checkbox" onchange="saveChatPreference('compact',this.checked)"></label>
+      <button class="chat-tool-primary" onclick="applyChatWallpaper()">Apply wallpaper</button>
+    </div>
+
+    <!-- MESSAGE REACTION & ACTION POPUP MENU -->
+    <div id="msg-action-popup" class="msg-action-popup">
+        <div class="emoji-bar">
+            <span onclick="sendReaction('❤️')">❤️</span>
+            <span onclick="sendReaction('😆')">😆</span>
+            <span onclick="sendReaction('😮')">😮</span>
+            <span onclick="sendReaction('😢')">😢</span>
+            <span onclick="sendReaction('😠')">😠</span>
+            <span onclick="sendReaction('👍')">👍</span>
+        </div>
+        <div class="action-btns-bar">
+            <button id="mark-seen-btn" class="msg-action-pill seen-action" onclick="markSelectedMessageSeen()" style="display:none"><i class="fa-solid fa-check-double"></i><span>Mark as seen</span></button>
+            <button class="msg-action-pill" onclick="copySelectedMessage()"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+            <button class="msg-action-pill" onclick="saveSelectedMessage()"><i class="fa-regular fa-bookmark"></i><span>Save</span></button>
+            <button class="msg-action-pill" onclick="pinSelectedMessage()"><i class="fa-solid fa-thumbtack"></i><span>Pin</span></button>
+            <button class="msg-action-pill" onclick="triggerReply()"><i class="fa-solid fa-reply"></i><span>Reply</span></button>
+            <button class="msg-action-pill" onclick="editSelectedMessage()"><i class="fa-solid fa-pen"></i><span>Edit</span></button>
+            <button class="msg-action-pill" onclick="forwardSelectedMessage()"><i class="fa-solid fa-share"></i><span>Forward</span></button>
+            <button class="msg-action-pill danger" onclick="triggerDelete()"><i class="fa-solid fa-trash"></i><span>Delete</span></button>
+        </div>
+    </div>
+
+    <!-- MESSAGE DELETE CHOOSER -->
+    <div id="delete-message-modal" class="delete-message-modal hidden" onclick="if(event.target===this) closeDeleteModal()">
+        <div class="delete-message-card">
+            <div class="delete-message-icon"><i class="fa-solid fa-trash-can"></i></div>
+            <h3>Delete message?</h3>
+            <p id="delete-message-description">Choose where you want to remove this message.</p>
+            <button id="delete-for-me-btn" class="delete-choice-btn secondary" onclick="deleteForMe()"><i class="fa-solid fa-user"></i><span><strong>Delete for you</strong><small>Remove it only from your chat</small></span></button>
+            <button id="delete-for-everyone-btn" class="delete-choice-btn danger" onclick="deleteForEveryone()"><i class="fa-solid fa-users"></i><span><strong>Delete for everyone</strong><small>Remove the message for both people</small></span></button>
+            <button class="delete-cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+        </div>
+    </div>
+
+
+    <!-- X AI ASSISTANT -->
+    <button id="ai-fab" class="ai-fab" onclick="openAIChat()" title="Chat with AI" aria-label="Chat with AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i><span>AI</span>
+    </button>
+
+    <div id="ai-chat-screen" class="ai-chat-screen hidden" aria-hidden="true">
+        <div class="ai-chat-header">
+            <div class="ai-chat-title-wrap">
+                <div class="ai-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <div><strong>X AI</strong><small>Friendly AI Assistant</small></div>
+            </div>
+            <div class="ai-chat-header-actions">
+                <button onclick="clearAIChat()" title="Clear AI chat"><i class="fa-solid fa-trash-can"></i></button>
+                <button onclick="closeAIChat()" title="Close AI chat"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div id="ai-chat-messages" class="ai-chat-messages"></div>
+        <div id="ai-typing" class="ai-typing hidden"><span></span><span></span><span></span> X AI is typing… <button id="ai-stop-btn" class="ai-stop-btn hidden" onclick="stopAIResponse()">Stop</button></div>
+        <div id="ai-image-preview" class="ai-image-preview hidden">
+            <img id="ai-image-preview-img" alt="Selected image">
+            <div><strong>Image ready</strong><small>বলুন ছবিতে কী পরিবর্তন করতে হবে</small></div>
+            <button type="button" onclick="clearAIImage()" title="Remove image"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="ai-chat-input-wrap">
+            <input id="ai-image-input" type="file" accept="image/*" hidden onchange="handleAIImage(event)">
+            <button class="ai-attach-btn" onclick="openAIImagePicker()" title="Send photo to X AI"><i class="fa-solid fa-image"></i></button>
+            <textarea id="ai-message-input" rows="1" placeholder="X AI-কে কিছু জিজ্ঞেস করো… ছবি দিয়ে edit-ও বলো" onkeydown="handleAIKeydown(event)"></textarea>
+            <button onclick="sendAIMessage()" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="ai-key-note"><i class="fa-solid fa-shield-halved"></i> X AI key is stored locally in this browser.</div>
+    </div>
+
+    <!-- SETTINGS & PROFILE EDIT SCREEN -->
+    <div id="settings-screen" class="sub-screen hidden" style="background:#242526; align-items:center; justify-content:flex-start; padding:20px; overflow-y:auto;">
+        <div style="width:100%; display:flex; align-items:center; margin-bottom:20px;">
+            <button class="back-btn" onclick="mpBack()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <h3 style="color:#fff; margin-left:15px; font-size:18px;">Settings</h3>
+        </div>
+        <div id="profile-edit-content" class="profile-edit-content"></div>
+        <div class="ai-settings-card">
+            <div class="ai-settings-title"><i class="fa-solid fa-wand-magic-sparkles"></i><div><strong>X AI</strong><small>Premium AI controls</small></div></div>
+            <div class="ai-key-row">
+                <input id="ai-api-key-input" type="password" autocomplete="off" placeholder="Paste your Gemini API key">
+                <button type="button" onclick="toggleAIKeyVisibility()" title="Show / hide key"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <div class="ai-key-hint"><i class="fa-solid fa-shield-halved"></i> Key is stored only in this browser's local storage. It is no longer written in script.js.</div>
+            <label>AI Model</label>
+            <select id="ai-model-select"><option value="gemini-3.8-flash">Gemini 3.8 Flash — Premium</option><option value="gemini-3.7-flash">Gemini 3.7 Flash — Fast</option><option value="gemini-3.6-flash">Gemini 3.6 Flash</option><option value="gemini-3.5-flash">Gemini 3.5 Flash</option><option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite — Fastest</option></select>
+            <div class="ai-settings-actions"><button onclick="saveAISettingsFromUI()"><i class="fa-solid fa-floppy-disk"></i> Save Key</button><button onclick="testAIConnection()"><i class="fa-solid fa-bolt"></i> Test</button><button onclick="openAIChat()"><i class="fa-solid fa-message"></i> Open AI</button></div>
+            <small class="ai-security-note">For production, use a server-side proxy so the Gemini key is never exposed to browsers.</small>
+        </div>
+        <button class="auth-btn" style="background:#e74c3c; margin-top:30px;" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+
+
+    <!-- PROFILE PHOTO CROP / ADJUST MODAL -->
+    <div id="profile-crop-modal" class="profile-crop-modal hidden">
+        <div class="profile-crop-card">
+            <h3>Adjust Profile Picture</h3>
+            <div class="crop-stage-wrap">
+                <canvas id="profile-crop-canvas" width="320" height="320"></canvas>
+            </div>
+            <div class="crop-help">Drag the photo to position it, then use Zoom. The square area will be cropped.</div>
+            <label class="crop-zoom-label">Zoom <input id="profile-crop-zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+            <div class="crop-actions">
+                <button type="button" class="crop-cancel" onclick="cancelProfileCrop()">Cancel</button>
+                <button type="button" class="crop-reset" onclick="resetProfileCrop()">Reset</button>
+                <button type="button" class="crop-save" onclick="applyProfileCrop()">Apply Crop (Auto Save)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM STYLISH ALERT MODAL -->
+    <div id="custom-alert-box" class="alert-box-overlay hidden">
+        <div class="alert-box-content">
+            <p id="custom-alert-text">Message here...</p>
+            <button onclick="closeCustomAlert()">OK</button>
+        </div>
+    </div>
+
+
+    <!-- FRIEND PROFILE / BLOCK / DELETE -->
+    <div id="friend-profile-modal" class="friend-profile-modal hidden" onclick="if(event.target===this) closeFriendProfile()">
+        <div class="friend-profile-card">
+            <button class="friend-profile-close" onclick="closeFriendProfile()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <div id="friend-profile-avatar" class="friend-profile-avatar">U</div>
+            <h3 id="friend-profile-name">Friend</h3>
+            <p id="friend-profile-username">@friend</p>
+            <p id="friend-profile-status" class="friend-profile-status">Friend</p>
+            <button id="friend-block-btn" class="friend-action-btn danger" onclick="toggleBlockFriend()"><i class="fa-solid fa-ban"></i> Block</button>
+            <button class="friend-action-btn" onclick="changeFriendNickname()"><i class="fa-solid fa-pen"></i> Change Nickname</button>
+            <button class="friend-action-btn delete" onclick="deleteFriend()"><i class="fa-solid fa-user-minus"></i> Delete Friend</button>
+        </div>
+    </div>
+
+    <!-- INCOMING CALL MODAL OVERLAY -->
+    <div id="incoming-call-screen" class="call-screen hidden">
+        <div style="text-align:center; margin-top:20px;">
+            <h3 id="incoming-caller-name" style="font-size:22px;">Incoming Call...</h3>
+            <p class="call-incoming-type" style="color:#b0b3b8; font-size:14px; margin-top:5px;">Ringing...</p>
+        </div>
+        <div id="incoming-call-avatar" class="call-avatar-lg">U</div>
+        <div class="call-controls">
+            <button class="call-btn" style="background:#31a24c;" onclick="acceptIncomingCall()"><i class="fa-solid fa-phone"></i></button>
+            <button class="call-btn end" onclick="rejectIncomingCall()"><i class="fa-solid fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <!-- AUDIO CALL SCREEN -->
+    <div id="audio-call-screen" class="call-screen hidden">
+        <div class="call-top-actions">
+            <button class="call-top-minimize" onclick="minimizeCallScreen()" aria-label="Minimize call" title="Minimize call"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="call-top-info">
+            <h3 id="audio-call-name">Calling...</h3>
+            <p id="audio-call-status">Calling...</p>
+        </div>
+        <div id="audio-call-avatar" class="call-avatar-lg">U</div>
+        <!-- Remote audio is intentionally separate from the visual call UI. -->
+        <audio id="remote-audio" autoplay playsinline></audio>
+        <div class="call-controls">
+            <button class="call-btn" id="btn-audio-mute" onclick="toggleAudioMute()" aria-label="Mute microphone"><i class="fa-solid fa-microphone"></i></button>
+            <button class="call-btn" id="btn-audio-speaker" onclick="toggleSpeaker()" aria-label="Toggle speaker"><i class="fa-solid fa-volume-low"></i></button>
+            <button class="call-btn end" onclick="endCall()" aria-label="End call"><i class="fa-solid fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <!-- VIDEO CALL SCREEN -->
+    <div id="video-call-screen" class="call-screen video-call-screen hidden">
+        <div class="call-top-actions video-top-actions">
+            <button class="call-top-minimize" onclick="minimizeCallScreen()" aria-label="Minimize call" title="Minimize call"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <video id="remote-video" class="remote-video" autoplay playsinline></video>
+        <video id="local-video" class="local-video" autoplay muted playsinline onclick="event.stopPropagation(); toggleLocalVideoSize()" title="Tap to enlarge camera"></video>
+        <div class="video-call-title">
+            <h3 id="video-call-name">Video Call</h3>
+            <p id="video-call-status">Calling...</p>
+        </div>
+        <div class="call-controls video-controls">
+            <button class="call-btn" id="btn-video-mute" onclick="toggleVideoMute()" aria-label="Mute microphone"><i class="fa-solid fa-microphone"></i></button>
+            <button class="call-btn" id="btn-video-camera" onclick="toggleVideoCamera()" aria-label="Toggle camera"><i class="fa-solid fa-video"></i></button>
+            <button class="call-btn" id="btn-video-speaker" onclick="toggleVideoSpeaker()" aria-label="Toggle speaker"><i class="fa-solid fa-volume-low"></i></button>
+            <button class="call-btn" onclick="flipCamera()" aria-label="Flip camera"><i class="fa-solid fa-camera-rotate"></i></button>
+            <button class="call-btn end" onclick="endCall()" aria-label="End call"><i class="fa-solid fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <!-- FLOATING CALL MINI PLAYER: lets the user keep chatting while a call is active -->
+    <div id="call-mini-bar" class="call-mini-bar hidden" aria-live="polite" title="Drag to move">
+        <button class="call-mini-main" onclick="restoreCallScreen()" aria-label="Open call">
+            <span id="call-mini-avatar" class="call-mini-avatar">U</span>
+            <span class="call-mini-copy"><strong id="call-mini-name">Call</strong><small id="call-mini-status">Connected · 00:00</small></span>
+        </button>
+        <button class="call-mini-btn" onclick="restoreCallScreen()" title="Open call"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+        <button class="call-mini-btn call-mini-end" onclick="endCall()" title="End call"><i class="fa-solid fa-phone-slash"></i></button>
+    </div>
+
+</div>
+
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
+<!-- External JS File -->
+<script src="turn-config.js"></script>
+<script src="script.js" defer></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./firebase-messaging-sw.js').catch(err => console.warn('PWA service worker registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>

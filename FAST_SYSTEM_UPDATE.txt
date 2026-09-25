@@ -1,0 +1,18 @@
+Messenger Pro V10.2 - Fast System Update
+
+What changed:
+- Friend list paints immediately with lightweight skeleton rows; it no longer waits for all profile/presence reads.
+- Friend count is shown instantly after the friends node is read.
+- Each friend profile, presence, and latest-message preview loads independently.
+- Notification initialization no longer downloads an entire chat for every friend. It reads only the latest message and then watches only the latest-child query.
+- Chat history remains paginated (25 latest messages first) and older messages load on demand.
+- Search close button and Follow back / Reject remain included.
+- Forgot Password OTP backend remains included: sendPasswordOtp, verifyPasswordOtp, resetPasswordWithOtp.
+
+Important for Forgot Password:
+1. Set Gmail SMTP values in functions/.env (use a Gmail App Password, not the normal Gmail password).
+2. From the project root run: firebase deploy --only functions
+3. The frontend calls the us-central1 functions for the OTP flow.
+
+Important for media:
+- Deploy Storage rules if needed: firebase deploy --only storage
